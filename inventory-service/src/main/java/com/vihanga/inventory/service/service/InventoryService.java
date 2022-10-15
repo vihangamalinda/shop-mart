@@ -1,7 +1,11 @@
 package com.vihanga.inventory.service.service;
 
 
+import com.vihanga.inventory.service.dto.InventoryResponseDto;
+
+import java.util.List;
+
 public interface InventoryService {
-    boolean isInStock(String skuCode);
+    List<InventoryResponseDto> isInStock(List<String> skuCode);
 
 }
