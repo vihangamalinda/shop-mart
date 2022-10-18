@@ -23,10 +23,10 @@ import java.util.stream.Collectors;
 public class OrderServiceImpl implements OrderService{
 
     private final OrderRepository orderRepository;
-    private final WebClient webClient;
+    private final WebClient.Builder webClientBuilder;
 
-    @Value("${microservice.inventory.base.url}")
-    private String inventoryBaseUrl;
+//    @Value("${microservice.inventory.base.url}")
+//    private String inventoryBaseUrl;
 
     @Override
     public void placeOrder(OrderRequest orderRequest) {
@@ -47,9 +47,9 @@ public class OrderServiceImpl implements OrderService{
                 .collect(Collectors.toList());
 
         // Calling the inventory microservice to identify whether the item is in stock
-        System.out.println(inventoryBaseUrl);
-        InventoryResponseDto[] inventoryResponseDtoArr =  webClient.get()
-                .uri(inventoryBaseUrl,
+//        System.out.println(inventoryBaseUrl);
+        InventoryResponseDto[] inventoryResponseDtoArr =  webClientBuilder.build().get()
+                .uri("http://inventory-service/api/inventory",
                         uriBuilder -> uriBuilder.queryParam("skuCode",skuCodes).build())
                 .retrieve()
                 .bodyToMono(InventoryResponseDto[].class)
